@@ -2,8 +2,11 @@ package tobyspring.splearn.domain;
 
 import java.util.regex.Pattern;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public record Email(String address) {
-    public static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
     public Email {
         if (!EMAIL_PATTERN.matcher(address).matches()) {
