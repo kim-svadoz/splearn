@@ -1,5 +1,7 @@
 package tobyspring.splearn.domain;
 
+import org.hibernate.annotations.NaturalId;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,7 +24,9 @@ public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // NaturalId: 비즈니스 적으로 의미가 있는 아이디를 사용할 때
     @Embedded
+    @NaturalId
     private Email email;
 
     private String nickname;
