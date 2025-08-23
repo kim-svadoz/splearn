@@ -1,5 +1,6 @@
 package tobyspring.splearn.application.provided;
 
+import jakarta.validation.Valid;
 import tobyspring.splearn.domain.Member;
 import tobyspring.splearn.domain.MemberRegisterRequest;
 
@@ -12,5 +13,5 @@ import tobyspring.splearn.domain.MemberRegisterRequest;
  * port에는 코멘트 쓰는 습관이 좋다(api이기 때문)
  */
 public interface MemberRegister {
-    Member register(MemberRegisterRequest registerRequest);
+    Member register(@Valid MemberRegisterRequest registerRequest);
 }
