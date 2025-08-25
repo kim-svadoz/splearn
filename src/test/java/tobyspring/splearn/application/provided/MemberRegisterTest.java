@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import static org.assertj.core.api.Assertions.*;
@@ -21,7 +22,7 @@ import tobyspring.splearn.domain.MemberStatus;
 @Transactional
 @Import(SplearnTestConfiguration.class)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-public record MemberRegisterTest(MemberRegister memberRegister) {
+public record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
 
     @Test
     void register() {
@@ -44,6 +45,18 @@ public record MemberRegisterTest(MemberRegister memberRegister) {
         extracted(new MemberRegisterRequest("toby@splearn.app", "Toby", "longsecret"));
         extracted(new MemberRegisterRequest("toby@splearn.app", "Charlie________________________", "longsecret"));
         extracted(new MemberRegisterRequest("tobysplearn.app", "Charlie", "longsecret"));
+    }
+
+    @Test
+    void activate() {
+        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
+        entityManager.flush();
+        entityManager.clear();
+
+        member = memberRegister.activate(member.getId());
+        entityManager.flush();
+
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
     }
 
     private AbstractThrowableAssert<?, ? extends Throwable> extracted(MemberRegisterRequest invalid) {
