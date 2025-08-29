@@ -6,8 +6,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import jakarta.persistence.EntityManager;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import tobyspring.splearn.domain.Member;
 import tobyspring.splearn.domain.MemberFixture;
 import static tobyspring.splearn.domain.MemberFixture.createPasswordEncoder;
