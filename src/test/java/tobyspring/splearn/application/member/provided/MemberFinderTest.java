@@ -1,4 +1,4 @@
-package tobyspring.splearn.application.provided;
+package tobyspring.splearn.application.member.provided;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +9,8 @@ import jakarta.transaction.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import tobyspring.splearn.SplearnTestConfiguration;
-import tobyspring.splearn.domain.Member;
-import tobyspring.splearn.domain.MemberFixture;
+import tobyspring.splearn.domain.member.Member;
+import tobyspring.splearn.domain.member.MemberFixture;
 
 @SpringBootTest
 @Transactional
