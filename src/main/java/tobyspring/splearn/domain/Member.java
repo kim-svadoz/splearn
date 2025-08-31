@@ -13,7 +13,7 @@ import static org.springframework.util.Assert.state;
 
 @Entity
 @Getter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends AbstractEntity {
     @NaturalId // 비즈니스 적으로 의미가 있는 아이디를 사용할 때
