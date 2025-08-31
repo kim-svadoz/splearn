@@ -5,14 +5,11 @@ import java.util.Objects;
 
 import org.springframework.util.Assert;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import static java.util.Objects.requireNonNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import static org.springframework.util.Assert.state;
 import tobyspring.splearn.domain.AbstractEntity;
 
 @Entity
@@ -20,7 +17,6 @@ import tobyspring.splearn.domain.AbstractEntity;
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDetail extends AbstractEntity {
-    @Embedded
     private Profile profile;
 
     private String introduction;

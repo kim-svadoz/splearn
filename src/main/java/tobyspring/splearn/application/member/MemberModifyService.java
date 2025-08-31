@@ -10,6 +10,7 @@ import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.application.member.required.EmailSender;
 import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.member.DuplicateEmailException;
+import tobyspring.splearn.domain.member.MemberInfoUpdateRequest;
 import tobyspring.splearn.domain.shared.Email;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberRegisterRequest;
@@ -57,6 +58,24 @@ public class MemberModifyService implements MemberRegister {
         // Spring Data 를 사용할 때는 스프링이 추구하는 방향성에 맞춰 개발하는 것이 사이드 이펙트를 줄이는데 유리하다.
         // 효과1: 세련된 코드가 된다.
         // 효과2: Spring Data가 제공하는 부가 기능(domain event)도 자연스럽게 사용 가능하다.
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member deactivate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.deactivate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member updateInfo(Long memberId, MemberInfoUpdateRequest updateRequest) {
+        Member member = memberFinder.find(memberId);
+
+        member.updateInfo(updateRequest);
+
         return memberRepository.save(member);
     }
 
