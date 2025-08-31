@@ -4,13 +4,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import tobyspring.splearn.application.member.provided.MemberFinder;
 import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.application.member.required.EmailSender;
 import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.member.DuplicateEmailException;
+import tobyspring.splearn.domain.member.DuplicateProfileException;
 import tobyspring.splearn.domain.member.MemberInfoUpdateRequest;
+import tobyspring.splearn.domain.member.Profile;
 import tobyspring.splearn.domain.shared.Email;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberRegisterRequest;
@@ -71,12 +75,25 @@ public class MemberModifyService implements MemberRegister {
     }
 
     @Override
-    public Member updateInfo(Long memberId, MemberInfoUpdateRequest updateRequest) {
+    public Member updateInfo(Long memberId, MemberInfoUpdateRequest memberInfoUpdateRequest) {
         Member member = memberFinder.find(memberId);
 
-        member.updateInfo(updateRequest);
+        checkDuplicateProfile(member, memberInfoUpdateRequest.profileAddress());
+
+        member.updateInfo(memberInfoUpdateRequest);
 
         return memberRepository.save(member);
+    }
+
+    private void checkDuplicateProfile(Member member, String profileAddress) {
+        if (profileAddress.isEmpty()) return;
+
+        Profile currentProfile = member.getDetail().getProfile();
+        if (currentProfile != null && member.getDetail().getProfile().address().equals(profileAddress)) return;
+
+        if (memberRepository.findByProfile(new Profile(profileAddress)).isPresent()) {
+            throw new DuplicateProfileException("이미 존재하는 프로필 주소입니다: " + profileAddress);
+        }
     }
 
     private void sendWelcomeEmail(Member member) {
